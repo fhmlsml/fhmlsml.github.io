@@ -1,41 +1,238 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Coming Soon</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/style.css">
-  </head>
-  <body>
-    <div class="background"></div>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nggolek Cafe - Find Your Perfect Coffee Spot</title>
+  <meta name="description" content="Discover nearby cafés and never settle for bad coffee again. Nggolek Cafe - your coffee spot locator." />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Abril+Fatface&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --background: hsl(14, 19%, 14%);
+      --foreground: hsl(30, 20%, 88%);
+      --primary: hsl(8, 50%, 50%);
+      --primary-foreground: hsl(30, 30%, 95%);
+      --secondary: hsl(18, 15%, 21%);
+      --muted-foreground: hsl(25, 12%, 52%);
+      --accent: hsl(15, 55%, 40%);
+      --accent-foreground: hsl(30, 30%, 95%);
+      --border: hsl(15, 12%, 26%);
+    }
+
+    @keyframes bg-breathe {
+      0%, 100% { background-color: hsl(14, 19%, 14%); }
+      50% { background-color: hsl(220, 20%, 14%); }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+    }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      overflow: hidden;
+      animation: bg-breathe 8s ease-in-out infinite;
+    }
+
+    .glow {
+      position: absolute;
+      top: 33%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: hsla(8, 50%, 50%, 0.1);
+      filter: blur(120px);
+      animation: pulse-glow 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .content > * {
+      opacity: 0;
+      animation: fade-up 0.6s ease-out forwards;
+    }
+    .content > *:nth-child(1) { animation-delay: 0s; }
+    .content > *:nth-child(2) { animation-delay: 0.15s; }
+    .content > *:nth-child(3) { animation-delay: 0.3s; }
+    .content > *:nth-child(4) { animation-delay: 0.45s; }
+
+    /* Icon */
+    .icon-wrap { display: flex; justify-content: center; margin-bottom: 2rem; }
+    .icon-box {
+      position: relative;
+      width: 80px; height: 80px;
+      border-radius: 16px;
+      background: hsla(8, 50%, 50%, 0.15);
+      border: 1px solid hsla(8, 50%, 50%, 0.2);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .icon-box svg { width: 40px; height: 40px; color: var(--primary); }
+    .icon-badge {
+      position: absolute; bottom: -4px; right: -4px;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .icon-badge svg { width: 14px; height: 14px; color: var(--accent-foreground); }
+
+    /* Heading */
+    .heading { margin-bottom: 2rem; }
+    .label {
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 0.75rem;
+    }
+    h1 { line-height: 1.15; margin-bottom: 0.75rem; }
+    .title-name {
+      font-family: 'Abril Fatface', serif;
+      font-size: clamp(2.5rem, 5vw, 3.75rem);
+      color: var(--primary);
+      filter: drop-shadow(0 0 24px hsla(8, 50%, 50%, 0.4));
+    }
+    .title-sub {
+      display: block; margin-top: 0.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.25rem, 3vw, 1.875rem);
+      font-weight: 600;
+      color: hsla(30, 20%, 88%, 0.9);
+    }
+    .desc {
+      color: var(--muted-foreground);
+      font-size: clamp(0.875rem, 2vw, 1.125rem);
+      max-width: 360px; margin: 0 auto; line-height: 1.6;
+    }
+
+    /* Form */
+    .form-wrap { margin-bottom: 2rem; }
+    .form {
+      display: flex; flex-direction: column; gap: 0.75rem;
+      max-width: 360px; margin: 0 auto;
+    }
+    @media (min-width: 640px) { .form { flex-direction: row; } }
+    .form input {
+      flex: 1; padding: 0.75rem 1rem; border-radius: 8px;
+      background: var(--secondary); border: 1px solid var(--border);
+      color: var(--foreground); font-size: 0.875rem;
+      font-family: 'Inter', sans-serif;
+      outline: none; transition: box-shadow 0.2s;
+    }
+    .form input::placeholder { color: var(--muted-foreground); }
+    .form input:focus { box-shadow: 0 0 0 2px hsla(8, 50%, 50%, 0.5); }
+    .form button {
+      padding: 0.75rem 1.5rem; border-radius: 8px; border: none;
+      background: var(--primary); color: var(--primary-foreground);
+      font-size: 0.875rem; font-weight: 600; font-family: 'Inter', sans-serif;
+      cursor: pointer; transition: filter 0.2s;
+      box-shadow: 0 8px 40px -8px hsla(8, 50%, 50%, 0.4);
+    }
+    .form button:hover { filter: brightness(1.1); }
+    .success {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.5rem; padding: 1rem; color: var(--primary);
+      font-size: 0.875rem; font-weight: 500;
+    }
+    .success svg { width: 20px; height: 20px; }
+    .hidden { display: none; }
+
+    /* Footer */
+    .footer {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.5rem; font-size: 0.75rem; color: var(--muted-foreground);
+      padding-top: 1rem;
+    }
+    .footer span { display: flex; align-items: center; gap: 0.375rem; }
+    .footer svg { width: 14px; height: 14px; }
+    .divider { height: 12px; width: 1px; background: var(--border); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="glow"></div>
     <div class="content">
-      <h1>Coming Soon</h1>
-      <p>Kamingsun, karena banyak kesibukan lain jadi belom rilis2 -_- stay tuned :D</p>
-      <div id="countdown">
-        <div class="transparent-box">
-          <div class="timer">
-            <div class="time-container">
-              <div class="time" id="days"></div>
-              <div class="time-text">Days</div>
-            </div>
-            <div class="time-container">
-              <div class="time" id="hours"></div>
-              <div class="time-text">Hours</div>
-            </div>
-            <div class="time-container">
-              <div class="time" id="minutes"></div>
-              <div class="time-text">Minutes</div>
-            </div>
-            <div class="time-container">
-              <div class="time" id="seconds"></div>
-              <div class="time-text">Seconds</div>
-            </div>
+      <!-- Icon -->
+      <div class="icon-wrap">
+        <div class="icon-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+          <div class="icon-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
         </div>
       </div>
-      <div class="bottom-text">
-        <p>Follow me on <a href="https://instagram.com/fhmlsml" target="_blank">Instagram</a> for update</p>
+
+      <!-- Heading -->
+      <div class="heading">
+        <p class="label">Coming Soon</p>
+        <h1>
+          <span class="title-name">Nggolek Cafe</span>
+          <span class="title-sub">Find Your Perfect Coffee Spot</span>
+        </h1>
+        <p class="desc">Discover nearby cafés and never settle for bad coffee again.</p>
+      </div>
+
+      <!-- Form -->
+      <div class="form-wrap">
+        <div class="success hidden" id="success">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+          <span>You're on the list! We'll notify you at launch.</span>
+        </div>
+        <form class="form" id="form" onsubmit="handleSubmit(event)">
+          <input type="email" required placeholder="your@email.com" />
+          <button type="submit">Notify Me</button>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          GPS Locator
+        </span>
+        <span class="divider"></span>
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+          Curated Cafés
+        </span>
+        <span class="divider"></span>
+        <span>★ Reviews</span>
       </div>
     </div>
-    <script src="js/scripts.js"></script>
-  </body>
+  </div>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('form').classList.add('hidden');
+      document.getElementById('success').classList.remove('hidden');
+    }
+  </script>
+</body>
 </html>
